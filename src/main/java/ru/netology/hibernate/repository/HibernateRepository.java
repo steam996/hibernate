@@ -5,9 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import ru.netology.hibernate.entity.Person;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class HibernateRepository {
@@ -19,21 +17,8 @@ public class HibernateRepository {
     }
 
     public List<Person> getPersonsByCity(String city) {
-        return getAllPerson()
-                .stream()
-                .filter((x)-> x.getCity().equals(city))
-                .collect(Collectors.toList());
-    }
-
-    private List<Person> getAllPerson() {
-        List<Person> personList = new ArrayList<>();
-        long count = 1L;
-        while (true) {
-            var result = entityManager.find(Person.class, count);
-            if (result == null) break;
-            count++;
-            personList.add(result);
-        }
-        return personList;
+        return entityManager.createNativeQuery("SELECT * FROM person WHERE city_id = " +
+                        "(SELECT id FROM city where city ilike :city)", Person.class)
+                .setParameter("city", city).getResultList();
     }
 }

@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: migrations/001_createSchemaAndTable.sql
+      relativeToChangelogFile: true
+
+  - include:
+      file: migrations/002_inputValues.sql
+      relativeToChangelogFile: true
+
