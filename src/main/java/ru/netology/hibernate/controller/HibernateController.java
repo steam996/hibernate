@@ -13,6 +13,15 @@ import java.util.List;
 @AllArgsConstructor
 public class HibernateController {
     private final PersonRepository repository;
+    @GetMapping("/")
+    public String hello(){
+        return "Hello, User";
+    }
+
+    @GetMapping("/persons")
+    public List<Person> getAllPerson(){
+        return repository.findAll();
+    }
 
     @GetMapping("/persons/by-city")
     public List<Person> getPersonsByCity(@RequestParam String city) {
