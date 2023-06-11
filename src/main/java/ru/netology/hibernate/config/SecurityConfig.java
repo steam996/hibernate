@@ -2,6 +2,7 @@ package ru.netology.hibernate.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
@@ -13,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 
 @Configuration
+@EnableMethodSecurity (securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig {
 
     @Bean
@@ -43,14 +45,17 @@ public class SecurityConfig {
         manager.createUser(User.withUsername("user")
                 .password(encoder().encode("pswd"))
                 .authorities("read")
+                .roles("READ")
                 .build());
         manager.createUser(User.withUsername("admin")
                 .password(encoder().encode("pswd"))
                 .authorities("read", "write", "all")
+                        .roles("READ", "WRITE", "DELETE")
                 .build());
         manager.createUser(User.withUsername("moder")
                 .password(encoder().encode("pswd"))
                 .authorities("read", "write")
+                        .roles("READ", "WRITE")
                 .build());
         return manager;
     }
